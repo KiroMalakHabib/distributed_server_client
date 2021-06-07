@@ -13,7 +13,7 @@ public class Graph {
 		size = 0;
 	}
 	
-	// function to detect if this node is in the graph or not
+	// function to detect if this node is in the graph or not.
 	public boolean isExist(int n) {
 		if (Nodes_num.contains(n)) return true;
 		return false;
@@ -22,6 +22,8 @@ public class Graph {
 	// function to add edges between nodes 
 	//if doesn't exist and to add nodes if don't exist
 	public void addEdge(int first, int second) {
+		if(first == second)
+			return;
 		if (!isExist(first)) {
 			Nodes_num.add(first);
 			Nodes.add(new Node(first));
@@ -42,6 +44,8 @@ public class Graph {
 	//by removing the second node from 
 	//the children list of the first node
 	public void removeEdge(int first, int second) {
+		if(first == second)
+			return;
 		if (isExist(first) && Nodes.get(Nodes_num.indexOf(first)).getChildren().contains(second)) {
 			Nodes.get(Nodes_num.indexOf(first)).delete_child_if_exist(second);
 		}
@@ -55,7 +59,11 @@ public class Graph {
 			return -1;
 		if (n1 == n2)
 			return 0;
-		int[] distances = new int[Nodes.size()];
+		int max_node = 0;
+		for(int i : Nodes_num) {
+			if (i > max_node) max_node = i;
+		}
+		int[] distances = new int[max_node];
 		List<Integer> visited = new ArrayList<Integer>();
 		List<Integer> unVisited = new ArrayList<Integer>();
 		for (int i = 0; i < distances.length; i++) {

@@ -4,7 +4,7 @@ public class Operation {
 	private OperationType type = null;
 	private int first_node, second_node;
 	
-	public Operation(Character c, int fisrt, int second) {
+	public Operation(Character c, int first, int second) {
 		switch(c) {
 			case 'A':
 				type = OperationType.A;
@@ -28,7 +28,7 @@ public class Operation {
 				type = OperationType.A;
 				break;	
 		}
-		first_node = fisrt;
+		first_node = first;
 		second_node = second;
 	}
 	

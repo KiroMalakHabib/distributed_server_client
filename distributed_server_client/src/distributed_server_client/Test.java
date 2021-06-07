@@ -9,9 +9,9 @@ public class Test {
 		Graph g = new Graph();
 		
 		File f = new File("./input_01.txt");
-		File f1 = new File("./01_instructions_01.txt");
+//		File f1 = new File("./01_instructions_01.txt");
 		List<Operation> initial = InputReader.getInstance().initiateGraph(f);
-		List<Operation> instructions1 = InputReader.getInstance().clientInput(f1);
+		List<Operation> instructions1 = InputReader.getInstance().generateInstructions();
 		
 		g.excuter(initial);
 		g.print_graph();
