@@ -1,5 +1,10 @@
 package distributed_server_client;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 public class Graph {
@@ -113,22 +118,56 @@ public class Graph {
 	}
 	
 	// function to execute operations to the graph
-	public List<Integer> excuter(List<Operation> operatioons){
+	public List<Integer> excuter(List<Operation> operatioons, int clintId){
 		List<Integer> distances = new ArrayList<Integer>();
-		for (Operation o : operatioons) {
-			switch (o.getOperation()) {
-			case A:
-				addEdge(o.getFirstNode(), o.getSecondNode());
-				break;
-			case D:
-				removeEdge(o.getFirstNode(), o.getSecondNode());
-				break;
-			case Q:
-				distances.add(shortestPath(o.getFirstNode(), o.getSecondNode()));
-				break;
-			default:
-				break;
-			}
+		File file = new File("server_log.txt");
+		Date date = new Date();
+//		Timestamp timestamp2 = new Timestamp(date.getTime());
+		try {
+			if (!file.exists()) {
+                file.createNewFile();
+            }
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            if (clintId == 0) {
+            	bw.write("Graph Initiation:");
+                bw.newLine();
+            } else {
+            	bw.write("client " + String.valueOf(clintId));
+                bw.newLine();
+            }
+            for (Operation o : operatioons) {
+    			switch (o.getOperation()) {
+    			case A:
+    				addEdge(o.getFirstNode(), o.getSecondNode());
+    				date = new Date();
+    				bw.write("Add edge "
+    				+ String.valueOf(o.getFirstNode())
+    				+ " -> "
+    				+ String.valueOf(o.getSecondNode())
+    				+ " at " + new Timestamp(date.getTime()));
+    				bw.newLine();
+    				break;
+    			case D:
+    				removeEdge(o.getFirstNode(), o.getSecondNode());
+    				date = new Date();
+    				bw.write("Remove edge between "
+    				+ String.valueOf(o.getFirstNode())
+    				+ " and "
+    				+ String.valueOf(o.getSecondNode())
+    				+ " at " + new Timestamp(date.getTime()));
+    				bw.newLine();
+    				break;
+    			case Q:
+    				distances.add(shortestPath(o.getFirstNode(), o.getSecondNode()));
+    				break;
+    			default:
+    				break;
+    			}
+    		}
+            bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return distances;
 	}
